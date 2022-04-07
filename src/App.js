@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { useQuery } from 'react-query'
+import { useState } from 'react'
 
-function App() {
+function Button () {
+  const { data, isLoading } = useQuery('todo', () => {
+    return new Promise(resolve => setTimeout(() => resolve(111), 1000))
+  })
+  console.log({ data, isLoading }, 'data ?')
+
+  return <button>I am Button {data}</button>
+}
+function App () {
+  const [visiable, setVisiable] = useState(true)
+
+  const toggle = () => {
+    setVisiable(visiable => !visiable)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className='App'>
+      <header className='App-header'>
+        {visiable && <Button />}
+
+        <button onClick={toggle}>Toggle</button>
+        <h1>React-Query </h1>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
